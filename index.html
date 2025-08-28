@@ -30,15 +30,12 @@
   <script>
   const container = document.getElementById("yazilar");
 
-  // Sayfanın kök yolunu al (örn: /maverick-blog/)
-  const basePath = window.location.pathname.replace(/index\.html$/, "");
-
-  fetch(basePath + "posts.json")
+  fetch("maverick-blog/posts.json")
     .then(res => res.json())
     .then(files => {
       container.innerHTML = "";
       files.forEach(dosya => {
-        fetch(basePath + "posts/" + dosya)
+        fetch("maverick-blog/posts/" + dosya)
           .then(res => res.text())
           .then(md => {
             let div = document.createElement("div");
@@ -49,6 +46,7 @@
       });
     });
 </script>
+
 
 </body>
 </html>
