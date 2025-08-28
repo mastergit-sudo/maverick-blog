@@ -28,24 +28,25 @@
   </div>
 
   <script>
-    const container = document.getElementById("yazilar");
+  const container = document.getElementById("yazilar");
 
-    fetch("posts.json")
-      .then(res => res.json())
-      .then(files => {
-        container.innerHTML = "";
-        files.forEach(dosya => {
-          fetch("posts/" + dosya)
-            .then(res => res.text())
-            .then(md => {
-              let div = document.createElement("div");
-              div.classList.add("blog");
-              div.innerHTML = marked.parse(md);
-              container.appendChild(div);
-            });
-        });
+  fetch("./posts.json")
+    .then(res => res.json())
+    .then(files => {
+      container.innerHTML = "";
+      files.forEach(dosya => {
+        fetch("./posts/" + dosya)
+          .then(res => res.text())
+          .then(md => {
+            let div = document.createElement("div");
+            div.classList.add("blog");
+            div.innerHTML = marked.parse(md);
+            container.appendChild(div);
+          });
       });
-  </script>
+    });
+</script>
+
 
 </body>
 </html>
