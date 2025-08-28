@@ -1,7 +1,7 @@
 name: Update posts.json
 
 permissions:
-  contents: write
+  contents: write   # Actions'ın push yapabilmesi için gerekli
 
 on:
   push:
@@ -9,17 +9,15 @@ on:
       - 'posts/*.md'
 
 jobs:
-  update-posts:
+  update:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
       - name: Generate posts.json
         run: |
           echo "[" > posts.json
-          ls posts/*.md | sed 's|posts/||' | sed 's|^|  "|;s|$|"|' | paste -sd, - >> posts.json
+          ls posts/*.md | sed 's|posts/||' | sed '$!s/$/,/' >> posts.json
           echo "]" >> posts.json
 
       - name: Commit changes
@@ -28,4 +26,4 @@ jobs:
           git config --global user.email "actions@github.com"
           git add posts.json
           git commit -m "Auto-update posts.json" || echo "No changes"
-          git push
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD:${{ github.ref }}
